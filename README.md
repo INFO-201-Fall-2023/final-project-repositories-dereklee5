@@ -19,33 +19,33 @@ Through our project, we hope to spread light on the impact that a change in ocea
 
 ### Dataset 1
 
-#### Where did you download
+#### Where did you download:
 [GLODAP Pacific Ocean](https://www.ncei.noaa.gov/data/oceans/ncei/ocads/data/0210813)
 [GLODAP infographic](https://www.glodap.info/wp-content/uploads/2022/08/ReleasePoster_v2_2022.pdf)
 
-#### How data was collected
+#### How data was collected:
 This data was collected from numerous NOAA sources and conglomerated by the Global Ocean Data Analysis Project (GLODAP). It contains statistics specifically on the Pacific Ocean from 1993 to 2018. Information includes precisely where and at what time the data was collected (latitude, longitude, month/day/hour/minute, pressure, depth) as well as the temperature, salinity, pH, and chemical levels. 
 
-#### Rows/Observations
+#### Rows/Observations:
 There are 510688 rows of data. 
 
-#### Columns/Features
+#### Columns/Features:
 There are 105 columns of data. 
 
 ___
 
 ### Dataset 2
 
-#### Where did you download
+#### Where did you download:
 For our second dataset, we downloaded a dataset with geospatial data of mental health in the United States population between 2011 and 2015. [US Mental Health Geospatial Dataset](https://data.mendeley.com/datasets/b37tk3xbyt/1)
 
-#### How data was collected
+#### How data was collected:
 The data was collected by the National Survey of Drug Use and Health and was initially collected to demonstrate a correlation between drug usage and population mental health. It examines symptoms of depression, suicidal thinking, and overall severe and debilitating mental illnesses. 
 
-#### Rows/Observations
+#### Rows/Observations:
 There are 787 rows of data
 
-#### Columns/Features
+#### Columns/Features:
 There are 42 columns of data
 
 ## Background Research/Inspiration
