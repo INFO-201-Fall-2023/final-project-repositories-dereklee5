@@ -12,8 +12,14 @@ df <- read.csv("Final_Clean_DF.csv")
 ui <- navbarPage(
   titlePanel("Analyzing the Change in Ocean Conditions with the Decline in Mental Wellbeing Across the World")
   br()
-  p(Our project aims to explore the correlation between declining ocean conditions and their impacts on 
+  p("Context: Our project aims to explore the correlation between declining ocean conditions and their impacts on 
 people’s mental well-being across the world. Through our analysis, we hope to")
+  br()
+  p("Insert explanation on why this is interesting - use previous project assignments")
+  br()
+  p("Datasets + Analysis")
+  br()
+  p("Conclusion")
 )
 
 server <- function(input, output){
