@@ -4,3 +4,18 @@ library(stringr)
 library(ggplot2)
 library(shiny)
 library(plotly)
+
+df <- read.csv("Final_Clean_DF.csv")
+
+
+
+ui <- navbarPage(
+
+)
+
+server <- function(input, output){
+
+}
+
+
+shinyApp(ui = ui, server = server)
