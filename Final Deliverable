@@ -23,7 +23,10 @@ people’s mental well-being across the world. Through our analysis, we hope to"
 )
 
 ui <- navbarPage(
-  intro_pg
+  intro_pg,
+  viz_pg_1,
+  viz_pg_2,
+  viz_pg_3
 )
 
 server <- function(input, output){
