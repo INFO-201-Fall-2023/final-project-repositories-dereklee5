@@ -37,7 +37,8 @@ ___
 ### Dataset 2
 
 #### Where did you download:
-For our second dataset, we downloaded a dataset that aggregates a survey on global happiness, also known as the World Happiness Report. The dataset contains information from 2005 to 2018 by countries, which are tagged with a regional indicator. The main measurement for happiness is the Cantril ladder by which respondents record their score thinking of a 0 as the worst possible life for them and a 10 as the best possible life. Some indicators (among others) include GDP per capita and life expectancy at birth.  [World Happiness Indicators Dataset](https://www.kaggle.com/datasets/unsdsn/world-happiness)
+For our second dataset, we downloaded a dataset that aggregates a survey on global happiness, also known as the World Happiness Report. The dataset contains information from 2005 to 2018 by countries, which are tagged with a regional indicator. The main measurement for happiness is the Cantril ladder by which respondents record their score thinking of a 0 as the worst possible life for them and a 10 as the best possible life. Some indicators (among others) include GDP per capita and life expectancy at birth.  
+[World Happiness Indicators Dataset](https://www.kaggle.com/datasets/unsdsn/world-happiness)
 
 #### How data was collected:
 The data was accumulated by analysis of the World Happiness Report which ranks 155 countries by their happiness levels. Happiness indicators initially come from the decision of the United Nations to help governments, organizations, and civil society inform policy decisions. Much of the data was collected from a Gallup World poll and were weighted to make the estimates representative of their individual countries. All countries are compared against "Dystopia," a hypothetical country with values equal to the world's lowest national average for each factor. 
