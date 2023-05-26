@@ -5,31 +5,22 @@ library(ggplot2)
 library(shiny)
 library(plotly)
 
+source("data_cleaning.R")
 df <- read.csv("Final_Clean_DF.csv")
-new_df <- subset(df, select = c(Life.Ladder, Social.Support, Generosity, avg_temperature, avg_oxygen, avg_nitrate))
-new_df$select_choices <- c(Life.Ladder, Social.Support, Generosity, avg_temperature, avg_oxygen, avg_nitrate)
-new_df$new_temp <- mean(new_df$avg_temperature, na.rm=TRUE)
-new_df$new_oxygen <-mean(new_df$avg_oxygen, na.rm=TRUE)
-new_df$new_ntirate <- mean(new_df$avg_nitrate, na.rm=TRUE)
-new_df$life_ladder <- mean(new_df$Life.Ladder, na.rm=TRUE)
-new_df$social_support <- mean(new_df$Social.Support, na.rm=TRUE)
-new_df$generosity <- mean(new_df$Generosity, na.rm=TRUE)
-
 
 
 intro_pg <- tabPanel("Introduction",
-  h1("Analyzing the Change in Ocean Conditions with the Decline in Mental Wellbeing Across the World"),
-  br(),
-  p("Context: Our project aims to explore the correlation between declining ocean conditions and their impacts on 
+                     h1("Analyzing the Change in Ocean Conditions with the Decline in Mental Wellbeing Across the World"),
+                     br(),
+                     p("Context: Our project aims to explore the correlation between declining ocean conditions and their impacts on 
 people’s mental well-being across the world. Through our analysis, we hope to"),
-  br(),
-  p("Insert explanation on why this is interesting - use previous project assignments"),
-  br(),
-  p("Datasets + Analysis"),
-  br(),
-  p("Conclusion")
+                     br(),
+                     p("Insert explanation on why this is interesting - use previous project assignments"),
+                     br(),
+                     p("Datasets + Analysis"),
+                     br(),
+                     p("Conclusion")
 )
-
 
 controls <- sidebarPanel(
   h1("Control Panel"),
@@ -37,43 +28,46 @@ controls <- sidebarPanel(
     inputId = "data_type",
     label = "Select",
     choices = new_df$select_choices
-   )
+  )
 )
-2005_view <- tabPanel("2005", plotOutput(outputId = "barchart_5"))
-2018_view <- tabPanel("2018", plotOutput(outputId = "barchart_18"))
+view_05 <- tabPanel("2005", plotOutput(outputId = "barchart_5"))
+view_18 <- tabPanel("2018", plotOutput(outputId = "barchart_18"))
 both_view <- tabPanel("2005-2018", h3("Change between 2005 and 2018"),
-                       p("This is where I would describe the dataset"),
-                       plotOutput(outputId = "linechart"))
+                      p("This is where I would describe the dataset"),
+                      plotOutput(outputId = "linechart"))
 viz_pg_1 <- tabPanel("Change Over Time",
-  fluidPage(
-    titlePanel("Comparing Ocean Conditions and Mental Wellbeing Over Time"),
-    sidebarLayout(
-      controls,
-      mainPanel(
-        tabsetPanel(
-          2005_view,
-          2018_view,
-          both_view
-        )
-      )
-    )
-   )
- )
+                     fluidPage(
+                       titlePanel("Comparing Ocean Conditions and Mental Wellbeing Over Time"),
+                       sidebarLayout(
+                         controls,
+                         mainPanel(
+                           tabsetPanel(
+                             view_05,
+                             view_18,
+                             both_view
+                           )
+                         )
+                       )
+                     )
+)
+
 ui <- navbarPage(
   intro_pg,
-  viz_pg_1,
-  viz_pg_2,
-  viz_pg_3,
+  viz_pg_1
+  #viz_pg_2,
+  #viz_pg_3,
   #summary_pg
 )
 
 server <- function(input, output){
   output$barchart_5 <- renderPlot({
     #char_info <- filter(char_df, Character == input$char_name)
-    #p <- ggplot(new_df, aes(x = Class, y = Speed)) + geom_bar(stat = "identity")
-    #return(p)
+    
+    p <- ggplot(data_05, aes(x = avg_temperature, y = avg_oxygen)) + geom_bar(stat = "identity")
+    return(p)
   })
 }
 
 
 shinyApp(ui = ui, server = server)
+
