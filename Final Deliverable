@@ -63,11 +63,10 @@ server <- function(input, output){
   output$barchart_5 <- renderPlot({
     #char_info <- filter(char_df, Character == input$char_name)
     
-    p <- ggplot(data_05, aes(x = avg_temperature, y = avg_oxygen)) + geom_bar(stat = "identity")
+    p <- ggplot(data_05, aes(x = Categories, y = V1)) + geom_bar(stat = "identity")
     return(p)
   })
 }
 
 
 shinyApp(ui = ui, server = server)
-
