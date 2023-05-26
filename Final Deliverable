@@ -6,7 +6,8 @@ library(shiny)
 library(plotly)
 
 df <- read.csv("Final_Clean_DF.csv")
-
+new_df <- subset(df, select = c(Life.Ladder, Social.Support, Generosity, avg_temperature, avg_oxygen, avg_nitrate))
+new_df$select_choices <- c(Life.Ladder, Social.Support, Generosity, avg_temperature, avg_oxygen, avg_nitrate)
 
 
 intro_pg <- tabPanel("Introduction",
@@ -22,11 +23,41 @@ people’s mental well-being across the world. Through our analysis, we hope to"
   p("Conclusion")
 )
 
+
+controls <- sidebarPanel(
+  h1("Control Panel"),
+  selectInput(
+    inputId = "data_type",
+    label = "Select",
+    choices = new_df$select_choices
+   )
+)
+2005_view <- tabPanel("2005", plotOutput(outputId = "barchart_5"))
+2018_view <- tabPanel("2018", plotOutput(outputId = "barchart_18"))
+both_view <- tabPanel("2005-2018", h3("Change between 2005 and 2018"),
+                       p("This is where I would describe the dataset"),
+                       plotOutput(outputId = "linechart"))
+viz_pg_1 <- tabPanel("Change Over Time",
+  fluidPage(
+    titlePanel("Comparing Ocean Conditions and Mental Wellbeing Over Time"),
+    sidebarLayout(
+      controls,
+      mainPanel(
+        tabsetPanel(
+          2005_view,
+          2018_view,
+          both_view
+        )
+      )
+    )
+   )
+ )
 ui <- navbarPage(
   intro_pg,
   viz_pg_1,
   viz_pg_2,
-  viz_pg_3
+  viz_pg_3,
+  summary_pg
 )
 
 server <- function(input, output){
