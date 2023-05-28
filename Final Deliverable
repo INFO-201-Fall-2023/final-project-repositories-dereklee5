@@ -66,6 +66,16 @@ server <- function(input, output){
     p <- ggplot(data_05, aes(x = Categories, y = V1)) + geom_bar(stat = "identity")
     return(p)
   })
+  output$barchart_18 <- renderPlot({
+    a <- ggplot(data_18, aes(x = Categories, y = V1, color = Categories)) + geom_bar(stat = "identity")
+    return(a)
+  })
+  output$linechart <- renderPlot({
+    df_long <- tidyr::gather(avg_df, key = "Variable", value = "Value", -Year)
+    b <- ggplot(df_long, aes(x = Year, y = Value, color = Variable)) +
+      geom_line()
+    return(b)
+  })
 }
 
 
