@@ -51,7 +51,7 @@ viz_pg_1 <- tabPanel("Change Over Time",
                      )
 )
 
-ui <- navbarPage(
+ui <- navbarPage("Final Deliverable",
   intro_pg,
   viz_pg_1
   #viz_pg_2,
