@@ -64,8 +64,12 @@ ui <- navbarPage("Final Deliverable",
 
 server <- function(input, output){
   output$barchart_5 <- renderPlot({
-    if(input$data_type == "All" | input$second_type == "All") {
+    if(input$data_type == "All" && input$second_type == "All") {
       data_cat <- data_05
+    } else if(input$data_type == "All") {
+      data_cat <- filter(data_05, Categories == input$second_type)
+    } else if (input$second_type == "All") {
+      data_cat <- filter(data_05, Categories == input$data_type)
     } else {
       data_cat <- filter(data_05, Categories == input$data_type | Categories == input$second_type)
     }
@@ -73,8 +77,12 @@ server <- function(input, output){
     return(p)
   })
   output$barchart_18 <- renderPlot({
-    if(input$data_type == "All" | input$second_type == "All") {
+    if(input$data_type == "All" && input$second_type == "All") {
       data_cat <- data_18
+    } else if(input$data_type == "All") {
+      data_cat <- filter(data_18, Categories == input$second_type)
+    } else if (input$second_type == "All") {
+      data_cat <- filter(data_18, Categories == input$data_type)
     } else {
       data_cat <- filter(data_18, Categories == input$data_type | Categories == input$second_type)
     }
@@ -83,8 +91,12 @@ server <- function(input, output){
   })
   output$linechart <- renderPlot({
     df_long <- tidyr::gather(avg_df, key = "Variable", value = "Value", -Year)
-    if(input$data_type == "All" | input$second_type == "All") {
+    if(input$data_type == "All" && input$second_type == "All") {
       data_cat <- df_long
+    } else if(input$data_type == "All") {
+      data_cat <- filter(df_long, Variable == input$second_type)
+    } else if (input$second_type == "All") {
+      data_cat <- filter(df_long, Variable == input$data_type)
     } else {
       data_cat <- filter(df_long, Variable == input$data_type | Variable == input$second_type)
     }
@@ -93,4 +105,6 @@ server <- function(input, output){
     return(b)
   })
 }
+
+
 shinyApp(ui = ui, server = server)
