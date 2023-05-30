@@ -10,31 +10,34 @@ df <- read.csv("Final_Clean_DF.csv")
 
 
 intro_pg <- tabPanel("Introduction",
-                     h1("Analyzing the Change in Ocean Conditions with the Decline in Mental Wellbeing Across the World"),
-                     br(),
-                     p("Context: Our project aims to explore the correlation between declining ocean conditions and their impacts on 
+  h1("Analyzing the Change in Ocean Conditions with the Decline in Mental Wellbeing Across the World"),
+  br(),
+  p("Context: Our project aims to explore the correlation between declining ocean conditions and their impacts on 
 people’s mental well-being across the world. Through our analysis, we hope to"),
-                     br(),
-                     p("Insert explanation on why this is interesting - use previous project assignments"),
-                     br(),
-                     p("Datasets + Analysis"),
-                     br(),
-                     p("Conclusion")
+  br(),
+  p("Insert explanation on why this is interesting - use previous project assignments"),
+  br(),
+  p("Datasets + Analysis"),
+  br(),
+  p("Conclusion")
 )
 
 controls <- sidebarPanel(
   h1("Control Panel"),
   selectInput(
     inputId = "data_type",
-    label = "Select",
-    choices = new_df$select_choices
+    label = "Select a Category:",
+    choices = filter_choice_df$filter_choices
+  ),
+  selectInput(
+    inputId = "second_type",
+    label = "Select a Second Category:",
+    choices = filter_choice_df$filter_choices
   )
 )
 view_05 <- tabPanel("2005", plotOutput(outputId = "barchart_5"))
 view_18 <- tabPanel("2018", plotOutput(outputId = "barchart_18"))
-both_view <- tabPanel("2005-2018", h3("Change between 2005 and 2018"),
-                      p("This is where I would describe the dataset"),
-                      plotOutput(outputId = "linechart"))
+both_view <- tabPanel("2005-2018", h3("Change between 2005 and 2018"), plotOutput(outputId = "linechart"))
 viz_pg_1 <- tabPanel("Change Over Time",
                      fluidPage(
                        titlePanel("Comparing Ocean Conditions and Mental Wellbeing Over Time"),
@@ -52,31 +55,42 @@ viz_pg_1 <- tabPanel("Change Over Time",
 )
 
 ui <- navbarPage("Final Deliverable",
-  intro_pg,
-  viz_pg_1
-  #viz_pg_2,
-  #viz_pg_3,
-  #summary_pg
+                 intro_pg,
+                 viz_pg_1
+                 #viz_pg_2,
+                 #viz_pg_3,
+                 #summary_pg
 )
 
 server <- function(input, output){
   output$barchart_5 <- renderPlot({
-    #char_info <- filter(char_df, Character == input$char_name)
-    
-    p <- ggplot(data_05, aes(x = Categories, y = V1)) + geom_bar(stat = "identity")
+    if(input$data_type == "All" | input$second_type == "All") {
+      data_cat <- data_05
+    } else {
+      data_cat <- filter(data_05, Categories == input$data_type | Categories == input$second_type)
+    }
+    p <- ggplot(data_cat, aes(x = Categories, y = V1, fill = Categories)) + geom_bar(stat = "identity") + labs(x = "Variables", y = "Values", fill = "Variables")
     return(p)
   })
   output$barchart_18 <- renderPlot({
-    a <- ggplot(data_18, aes(x = Categories, y = V1, color = Categories)) + geom_bar(stat = "identity")
+    if(input$data_type == "All" | input$second_type == "All") {
+      data_cat <- data_18
+    } else {
+      data_cat <- filter(data_18, Categories == input$data_type | Categories == input$second_type)
+    }
+    a <- ggplot(data_cat, aes(x = Categories, y = V1, fill = Categories)) + geom_bar(stat = "identity") + labs(x = "Variables", y = "Values", fill = "Variables")
     return(a)
   })
   output$linechart <- renderPlot({
     df_long <- tidyr::gather(avg_df, key = "Variable", value = "Value", -Year)
-    b <- ggplot(df_long, aes(x = Year, y = Value, color = Variable)) +
+    if(input$data_type == "All" | input$second_type == "All") {
+      data_cat <- df_long
+    } else {
+      data_cat <- filter(df_long, Variable == input$data_type | Variable == input$second_type)
+    }
+    b <- ggplot(data_cat, aes(x = Year, y = Value, color = Variable)) +
       geom_line()
     return(b)
   })
 }
-
-
 shinyApp(ui = ui, server = server)
