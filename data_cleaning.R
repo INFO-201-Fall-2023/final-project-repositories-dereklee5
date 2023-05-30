@@ -12,9 +12,9 @@ avg_df$avg_temperature <- (1.8*avg_df$avg_temperature) + 32
 avg_df$life_ladder <- 10*avg_df$life_ladder
 avg_df$social_support <- 100*avg_df$social_support
 avg_df$freedom <- 100*avg_df$freedom
-colnames(avg_df) <- c("Year", "Avg. Temperature", "Silicate Levels", "Nitrate Levels", "Life Ladder", "Social Support", "Freedom")
+colnames(avg_df) <- c("Year", "Ocean Temperature", "Silicate Levels", "Nitrate Levels", "Life Ladder", "Social Support", "Freedom")
 
-filter_choice_df <- data.frame(filter_choices = c("All", "Avg. Temperature", "Silicate Levels", "Nitrate Levels", "Life Ladder", "Social Support", "Freedom"))
+filter_choice_df <- data.frame(filter_choices = c("All", "Ocean Temperature", "Silicate Levels", "Nitrate Levels", "Life Ladder", "Social Support", "Freedom"))
 
 
 
