@@ -54,12 +54,21 @@ viz_pg_1 <- tabPanel("Change Over Time",
                      )
 )
 
+controls_year <- sidebarPanel(
+  h1("Control Panel"),
+  selectInput(
+    inputId = "year",
+    label = "Select a Year",
+    choice = unique(df$Year)
+  )
+)
+
 plot_view <- tabPanel("Plot", plotOutput(outputId = "contrast_map"))
 main_viz_3 <- mainPanel(
   tabsetPanel(plot_view)
 )
 
-viz_page_3 <- tabPanel("Analysis",
+viz_pg_3 <- tabPanel("Contrasts",
                        fluidPage(
                          titlePanel("Contrasts Data Story"),
                          sidebarLayout(controls_year, main_viz_3)
