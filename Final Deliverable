@@ -7,7 +7,7 @@ library(plotly)
 
 source("data_cleaning.R")
 df <- read.csv("Final_Clean_DF.csv")
-
+map_data <- map_data('world')
 
 intro_pg <- tabPanel("Introduction",
   h1("Analyzing the Change in Ocean Conditions with the Decline in Mental Wellbeing Across the World"),
@@ -54,11 +54,23 @@ viz_pg_1 <- tabPanel("Change Over Time",
                      )
 )
 
+plot_view <- tabPanel("Plot", plotOutput(outputId = "contrast_map"))
+main_viz_3 <- mainPanel(
+  tabsetPanel(plot_view)
+)
+
+viz_page_3 <- tabPanel("Analysis",
+                       fluidPage(
+                         titlePanel("Contrasts Data Story"),
+                         sidebarLayout(controls_year, main_viz_3)
+                       )
+)
+
 ui <- navbarPage("Final Deliverable",
                  intro_pg,
-                 viz_pg_1
+                 viz_pg_1,
                  #viz_pg_2,
-                 #viz_pg_3,
+                 viz_pg_3
                  #summary_pg
 )
 
@@ -103,6 +115,33 @@ server <- function(input, output){
     b <- ggplot(data_cat, aes(x = Year, y = Value, color = Variable)) +
       geom_line()
     return(b)
+  })
+  
+  output$contrast_map <- renderPlot({
+    year_df <- filter(df, Year == input$year)
+    quartile <- round(nrow(year_df) / 4)
+    high <- year_df[order(year_df$Life.Ladder, decreasing = T), ][1:quartile, ]
+    low <- year_df[order(year_df$Life.Ladder), ][1:quartile, ]
+    
+    h_df <- left_join(high, map_data, by=c('Country.Name' = 'region'))
+    l_df <- left_join(low, map_data, by=c('Country.Name' = 'region'))
+    
+    p <- ggplot() +
+      geom_polygon(data = map_data("world"),
+                   aes(x=long, y=lat, group = group),
+                   color = 'darkgrey', fill = 'lightgrey') +
+      geom_polygon(data = h_df,
+                   aes(x=long, y=lat, group = group,
+                       fill = 'Upper Quartile')) +
+      geom_polygon(data = l_df,
+                   aes(x=long, y=lat, group = group,
+                       fill = 'Lower Quartile')) +
+      ggtitle(paste("Lower and Upper Quartile Life Ladder Score Countries in",
+                    input$year)) +
+      guides(fill=guide_legend(title="Colors")) +
+      scale_fill_manual(values = c('Upper Quartile' = 'royalblue', 'Lower Quartile' = 'firebrick'))
+    
+    return(p)
   })
 }
 
