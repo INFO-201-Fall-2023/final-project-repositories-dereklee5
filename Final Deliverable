@@ -10,17 +10,31 @@ df <- read.csv("Final_Clean_DF.csv")
 map_data <- map_data('world')
 
 intro_pg <- tabPanel("Introduction",
-  h1("Analyzing the Change in Ocean Conditions with the Decline in Mental Wellbeing Across the World"),
-  br(),
-  p("Context: Our project aims to explore the correlation between declining ocean conditions and their impacts on 
-people’s mental well-being across the world. Through our analysis, we hope to"),
-  br(),
-  p("Insert explanation on why this is interesting - use previous project assignments"),
-  br(),
-  p("Datasets + Analysis"),
-  br(),
-  p("Conclusion")
+                     h1("Analyzing the Change in Ocean Conditions with the Decline in Mental Wellbeing Across the World"),
+                     br(),
+                     p("Context: A plethora of negative effects have been identified as a result of ocean temperatures continuing to rise due to 
+                       climate change. Warming seawater causes ice to melt in polar regions and rises in sea levels, intensifying catastrophic events such as 
+                       cyclones, landslides, fatal storms, and flooding while also harming human populations. Aside from the negative changes in ocean water quality, 
+                       the United States has seen a significant surge in mental health disorders across the country. More Americans than ever before have expressed feelings of 
+                       social isolation and loneliness, which were exacerbated by the COVID-19 pandemic. This growth in mental health disorders is concerning and threatens the 
+                       well-being and vitality of millions of Americans."),
+                     br(),
+                     p("We believe that our research will shed light on the influence that changing ocean water conditions and climate change can have on Americans' mental health. 
+                       We intend to answer the topic of how one's environment might dictate and influence one's mental well-being by studying the association between changing ocean 
+                       water conditions and increasing mental health disorders across the United States over time. Our unique analysis takes an intriguing approach to treating mental 
+                       health difficulties by assessing their environmental roots and how they influence individuals in their daily lives, encouraging more people to take action and address 
+                       the destructive nature of these two diseases."),
+                     br(),
+                     p("Datasets + Analysis"),
+                     br(),
+                     p("Conclusion")
 )
+summary_pg <- tabPanel("Summary",
+                       h1("Summary Takeaways and About Us"),
+                       br(),
+                       p("Through our data analysis, it is evident that climate change impacting ocean conditions has an detrimental impact on people’s mental wellbeing across the world. It is imperative that experts continue to conduct research on this matter in order to improve the health of the earth as well as the mental health of individuals all across the globe. ")
+)
+
 
 controls <- sidebarPanel(
   h1("Control Panel"),
@@ -79,8 +93,8 @@ ui <- navbarPage("Final Deliverable",
                  intro_pg,
                  viz_pg_1,
                  #viz_pg_2,
-                 viz_pg_3
-                 #summary_pg
+                 viz_pg_3,
+                 summary_pg
 )
 
 server <- function(input, output){
