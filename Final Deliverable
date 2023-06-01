@@ -160,10 +160,10 @@ fluidPage(
     ),
     mainPanel(
       h2("Zooming Out: Visualizing Pacific Countries with a Radar Graph"),
+      h4("Note: There are several datapoints missing from the data; for example, the only Pacific countries for which there is data
+        in the year 2005 are Japan and Australia. See more recent years for more accurate results."),
       plotOutput(
-        outputId = "pac_rad"),
-      p("Note: There are several datapoints missing from the data; for example, the only Pacific countries for which there is data
-        in the year 2005 are Japan and Australia. See more recent years for more accurate results.")
+        outputId = "pac_rad")
       )
     ),
   #Zoomed Out: World View
