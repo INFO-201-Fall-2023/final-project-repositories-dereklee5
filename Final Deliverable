@@ -55,7 +55,7 @@ controls <- sidebarPanel(
   h1("Control Panel"),
   p("In this data visualization, we will analyze how ocean conditions and mental wellbeing factors change over time from 2005 to 2018."),
   p("We will be using the following variables to measure ocean conditions: average ocean temperature (measured in degrees Fahrenheit), average nitrate levels (measured in micromoles per liter), and average silicate levels (measured in micromoles per liter)."),
-  p("To measure mental wellbeing, we will be using the following variables measured across the world: reported feelings of freedom (%), life ladder score (out of 100), and reported feelings of social support (%)."),
+  p("To measure mental wellbeing, we will be using the following variables measured across the world: reported feelings of freedom (%), life ladder score (each multiplied by 10), and reported feelings of social support (%)."),
   p("Use the input selection form below to filter which data you want to look at!"),
   selectInput(
     inputId = "data_type",
