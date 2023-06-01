@@ -124,12 +124,12 @@ fluidPage(
     selectInput(
       inputId = "first_choice",
       label = "Pick a year:",
-      choices = unique(final_df$Year)
+      choices = unique(df$Year)
       ),
     selectInput(
       inputId = "country_choice",
       label = "Pick a country:",
-      choices = unique(final_df$Country.Name)
+      choices = unique(df$Country.Name)
     )
     ),
     mainPanel(
@@ -155,7 +155,7 @@ fluidPage(
       selectInput(
         inputId = "yr_choice",
         label = "Select the year that you would like to look at:",
-        choices = unique(final_df$Year)
+        choices = unique(df$Year)
       )
     ),
     mainPanel(
@@ -172,7 +172,7 @@ fluidPage(
       selectInput(
         inputId = "year_choice",
         label = "Select one of the following years to adjust the life ladder map:",
-        choices = unique(final_df$Year)
+        choices = unique(df$Year)
      ),
      p("Here, we can take a zoomed out approach. Life Ladder is one of the better indicators
        of what mental wellbeing looks like in that country. Compare our original example of the 
@@ -277,11 +277,11 @@ server <- function(input, output){
     return(p)
   })
   output$us_chart <- renderTable({
-    us_df <- filter(final_df, Country.Name == "United States", Year == 2007)
+    us_df <- filter(df, Country.Name == "United States", Year == 2007)
     return(us_df)
   })
   output$in_chart <- renderTable({
-    coyr_df <- filter(final_df, Year == input$first_choice, Country.Name == input$country_choice)
+    coyr_df <- filter(df, Year == input$first_choice, Country.Name == input$country_choice)
     return(coyr_df)
   })
   output$year_map <- renderPlot({
@@ -295,7 +295,7 @@ server <- function(input, output){
     return(map)
   })
   output$pac_rad <- renderPlot({
-    filt_df <- filter(final_df, Year == input$yr_choice, Country.Name == input$pac_choice)
+    filt_df <- filter(df, Year == input$yr_choice, Country.Name == input$pac_choice)
     select_df <- filt_df[, c("Life.Ladder", "Log.GDP.Per.Capita", "Social.Support", "Healthy.Life.Expectancy.At.Birth",
                              "Freedom.To.Make.Life.Choices", "avg_temperature", "avg_salinity")]
     max_min <- data.frame(Life.Ladder = c(10, 2.5), Log.GDP.Per.Capita = c(13, 0), Social.Support = c(1,0), 
