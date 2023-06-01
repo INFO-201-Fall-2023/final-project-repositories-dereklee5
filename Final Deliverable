@@ -22,7 +22,7 @@ map_data$region <- str_replace_all(map_data$region, "Palestine", "State of Pales
 pacific_countries <- c("Chile", "Ecuador", "Peru", "Papua New Guinea","Japan","Australia","United States")
 
 #Merge to Make Map
-df_map <- left_join(final_df, map_data, by=c('Country.Name'='region'))
+df_map <- left_join(df, map_data, by=c('Country.Name'='region'))
 
 intro_pg <- tabPanel("Introduction",
                      h1("Analyzing the Change in Ocean Conditions with the Decline in Mental Wellbeing Across the World"),
