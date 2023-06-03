@@ -1,37 +1,321 @@
+#Final Project: Final Deliverable
 library(dplyr)
 library(stringr)
 library(ggplot2)
 library(shiny)
 library(plotly)
+library(fmsb)
 
+source("data_cleaning.R")
 df <- read.csv("Final_Clean_DF.csv")
-new_df <- df[, c("Year", "Life.Ladder", "Social.Support", "Freedom.To.Make.Life.Choices", "avg_temperature", "avg_oxygen", "avg_tco2")]
-new_df <- group_by(new_df, Year, avg_temperature, avg_oxygen, avg_tco2)
-avg_df <- summarize(new_df, life_ladder = mean(Life.Ladder, na.rm=TRUE), social_support = mean(Social.Support, na.rm=TRUE), freedom = mean(Freedom.To.Make.Life.Choices, na.rm=TRUE))
-avg_df$avg_temperature <- (1.8*avg_df$avg_temperature) + 32
-avg_df$life_ladder <- 10*avg_df$life_ladder
-avg_df$social_support <- 100*avg_df$social_support
-avg_df$freedom <- 100*avg_df$freedom
-avg_df$avg_tco2 <- avg_df$avg_tco2 / 10
+map_data <- map_data('world')
+#Replacing Any Mismatched Country Names in the Mapping Data
+map_data <- map_data("world")
+map_data$region <- str_replace_all(map_data$region, "USA","United States")
+map_data$region <- str_replace_all(map_data$region, "Czech Republic", "Czechia")
+map_data$region <- str_replace_all(map_data$region, "Turkey", "Turkiye")
+map_data$region <- str_replace_all(map_data$region, "UK", "United Kingdom")
+map_data$region <- str_replace_all(map_data$region, "Taiwan", "Taiwan Province of China")
+map_data$region <- str_replace_all(map_data$region, "Trinidad", "Trinidad and Tobago")
+map_data$region <- str_replace_all(map_data$region, "Palestine", "State of Palestine")
 
-colnames(avg_df) <- c("Year", "Ocean Temperature", "Oxygen Levels", "CO2 Levels", "Life Ladder", "Social Support", "Freedom")
+pacific_countries <- c("Chile", "Ecuador", "Peru", "Papua New Guinea","Japan","Australia","United States")
+
+#Merge to Make Map
+df_map <- left_join(df, map_data, by=c('Country.Name'='region'))
+
+intro_pg <- tabPanel("Introduction",
+                     h1("Analyzing the Change in Ocean Conditions with the Decline in Mental Wellbeing Across the World"),
+                     br(),
+                     p("Context: A plethora of negative effects have been identified as a result of ocean temperatures continuing to rise due to 
+                       climate change. Warming seawater causes ice to melt in polar regions and rises in sea levels, intensifying catastrophic events such as 
+                       cyclones, landslides, fatal storms, and flooding while also harming human populations. Aside from the negative changes in ocean water quality, 
+                       the United States has seen a significant surge in mental health disorders across the country. More Americans than ever before have expressed feelings of 
+                       social isolation and loneliness, which were exacerbated by the COVID-19 pandemic. This growth in mental health disorders is concerning and threatens the 
+                       well-being and vitality of millions of Americans."),
+                     br(),
+                     p("We believe that our research will shed light on the influence that changing ocean water conditions and climate change can have on Americans' mental health. 
+                       We intend to answer the topic of how one's environment might dictate and influence one's mental well-being by studying the association between changing ocean 
+                       water conditions and increasing mental health disorders across the United States over time. Our unique analysis takes an intriguing approach to treating mental 
+                       health difficulties by assessing their environmental roots and how they influence individuals in their daily lives, encouraging more people to take action and address 
+                       the destructive nature of these two diseases."),
+                     br(),
+                     p("Datasets + Analysis"),
+                     br(),
+                     p("Conclusion")
+)
+summary_pg <- tabPanel("Summary",
+                       h1("Summary Takeaways and About Us"),
+                       br(),
+                       p("Through our data analysis, it is evident that climate change impacting ocean conditions has an detrimental impact on people’s mental wellbeing across the world. It is imperative that experts continue to conduct research on this matter in order to improve the health of the earth as well as the mental health of individuals all across the globe. ")
+)
 
 
-filter_choice_df <- data.frame(filter_choices = c("All", "Ocean Temperature", "Silicate Levels", "Nitrate Levels", "Life Ladder", "Social Support", "Freedom"))
+controls <- sidebarPanel(
+  h1("Control Panel"),
+  p("In this data visualization, we will analyze how ocean conditions and mental wellbeing factors change over time from 2005 to 2018."),
+  p("We will be using the following variables to measure ocean conditions: average ocean temperature (measured in degrees Fahrenheit), average oxygen levels, and average carbon dioxide levels."),
+  p("To measure mental wellbeing, we will be using: % of people experiencing feelings of freedom, life ladder score (overall happiness in life), and % of people feeling socially supported."),
+  p("Use the input selection form below to filter which data you want to look at!"),
+  selectInput(
+    inputId = "data_type",
+    label = "Select a Category:",
+    choices = filter_choice_df$filter_choices
+  ),
+  selectInput(
+    inputId = "second_type",
+    label = "Select a Second Category:",
+    choices = filter_choice_df$filter_choices
+  )
+)
+view_05 <- tabPanel("2005", h3("Data During 2005"), p("Hover over each bar to see the exact value!"), plotlyOutput(outputId = "barchart_5"))
+view_18 <- tabPanel("2018", h3("Data During 2018"), p("Hover over each bar to see the exact value!"), plotlyOutput(outputId = "barchart_18"))
+both_view <- tabPanel("2005-2018", h3("Change Between 2005 and 2018"), p("Hover over each data point to see the exact value!"), plotlyOutput(outputId = "linechart"))
+viz_pg_1 <- tabPanel("Change Over Time",
+                     fluidPage(
+                       titlePanel("Comparing Ocean Conditions and Mental Wellbeing Over Time"),
+                       sidebarLayout(
+                         controls,
+                         mainPanel(
+                           tabsetPanel(
+                             view_05,
+                             view_18,
+                             both_view
+                           )
+                         )
+                       )
+                     )
+)
 
+controls_year <- sidebarPanel(
+  h1("Control Panel"),
+  selectInput(
+    inputId = "year",
+    label = "Select a Year",
+    choice = unique(df$Year)
+  )
+)
 
-data_05 <- filter(avg_df, Year == 2005)
-data_05 <- as.data.frame(t(data_05))
-data_05$Categories <- rownames(data_05)
-data_05 <- subset(data_05, V1 < 1000 )
+plot_view <- tabPanel("Plot", plotOutput(outputId = "contrast_map"))
+main_viz_3 <- mainPanel(
+  tabsetPanel(plot_view)
+)
 
-data_18 <- filter(avg_df, Year == 2018)
-data_18 <- as.data.frame(t(data_18))
-data_18$Categories <- rownames(data_18)
-data_18 <- subset(data_18, V1 < 1000)
+viz_pg_2 <- tabPanel("Zooming Out", 
+                     fluidPage(
+                       titlePanel("Zooming Out: Perspective on the Life Ladder"),
+                       
+                       #Zoomed In: United States View 
+                       sidebarLayout(
+                         sidebarPanel(
+                           p("Let's start by looking at the United States, the country in which we live in.
+        To begin our zoomed in analysis, in the year 2007, the United States had the 
+        highest life ladder of any Pacific country in the dataset, with a score of 7.513. 
+        At this time, life expectancy at birth was 66.76 years."),
+                           p("Also in the year 2007, the average ocean temperature in the Pacific was at 7.43º Celsius, or 45.4º 
+        Fahrenheit.")
+                         ),
+                         mainPanel(
+                           h2("Zoomed In: The United States"),
+                           tableOutput(
+                             outputId = "us_chart")
+                         )
+                       ),
+                       #Zoomed In: Select your country
+                       sidebarLayout(
+                         sidebarPanel(
+                           p("Feel free to explore the statistics for other countries in a given year."),
+                           selectInput(
+                             inputId = "first_choice",
+                             label = "Pick a year:",
+                             choices = unique(df$Year)
+                           ),
+                           selectInput(
+                             inputId = "country_choice",
+                             label = "Pick a country:",
+                             choices = unique(df$Country.Name)
+                           )
+                         ),
+                         mainPanel(
+                           h2("Zoomed In: Any Country or Year"),
+                           tableOutput(
+                             outputId = "in_chart"),
+                           p("As you can see, there is substantial variation between individual countries. Now that we've looked 
+        at the data on a zoomed in scale, let's move on and begin zooming out.")
+                         )
+                       ),
+                       #Moving Out: Pacific Countries
+                       sidebarLayout(
+                         sidebarPanel(
+                           p("To begin zooming out, we will look at only Pacific countries, which is where our ocean data comes from. This includes 
+      Chile, Ecuador, Peru, Papua New Guinea, Japan, Australia, and the United States. We will look at different years, but to 
+      compare once again in 2007, Ecuador had the lowest Life Laddder score at 4.99 compared to the high scores of 
+      the United States at 7.51 and Australia at 7.29."),
+                           radioButtons(
+                             inputId = "pac_choice",
+                             label = "Select one of the Pacific countries you want to see all the stats for:",
+                             choices = pacific_countries
+                           ),
+                           selectInput(
+                             inputId = "yr_choice",
+                             label = "Select the year that you would like to look at:",
+                             choices = unique(df$Year)
+                           )
+                         ),
+                         mainPanel(
+                           h2("Zooming Out: Visualizing Pacific Countries with a Radar Graph"),
+                           h4("Note: There are several datapoints missing from the data; for example, the only Pacific countries for which there is data
+        in the year 2005 are Japan and Australia. See more recent years for more accurate results."),
+                           plotOutput(
+                             outputId = "pac_rad")
+                         )
+                       ),
+                       #Zoomed Out: World View
+                       sidebarLayout(
+                         sidebarPanel(
+                           selectInput(
+                             inputId = "year_choice",
+                             label = "Select one of the following years to adjust the life ladder map:",
+                             choices = unique(df$Year)
+                           ),
+                           p("Here, we can take a zoomed out approach. Life Ladder is one of the better indicators
+       of what mental wellbeing looks like in that country. Compare our original example of the 
+       high scores of United States in 2007 to other countries or years.")
+                         ),
+                         mainPanel(
+                           h2("Zoomed Out: Life Ladder on a Global Scale"),
+                           plotOutput(
+                             outputId = "year_map"),
+                           p("Life Ladder score describes how good a person perceives their life as being, on 
+      a scale from 0 to 10. A score of 10 represents the best possible life and a score of 0 represents the worst possible life 
+      that person could imagine for themselves. The world map displays the data contained only for that
+      year. Some  countries do not contain information on the Life Ladder scale for a particular 
+        year or at all. Again, see more recent years for a more full map.")
+                         )
+                       )
+                     )
+)
 
-column_names <- colnames(avg_df)
-df_new <- data.frame(Variable = rep(column_names, each = nrow(avg_df)),
-                     Value = as.vector(t(avg_df)))
-df_long <- tidyr::gather(avg_df, key = "Variable", value = "Value", -Year)
+viz_pg_3 <- tabPanel("Contrasts",
+                     fluidPage(
+                       titlePanel("Contrasts Data Story"),
+                       sidebarLayout(controls_year, main_viz_3)
+                     )
+)
 
+ui <- navbarPage("Final Deliverable",
+                 intro_pg,
+                 viz_pg_1,
+                 viz_pg_2,
+                 viz_pg_3,
+                 summary_pg
+)
+
+server <- function(input, output){
+  output$barchart_5 <- renderPlotly({
+    if(input$data_type == "All" && input$second_type == "All") {
+      data_cat <- data_05
+    } else if(input$data_type == "All") {
+      data_cat <- filter(data_05, Categories == input$second_type)
+    } else if (input$second_type == "All") {
+      data_cat <- filter(data_05, Categories == input$data_type)
+    } else {
+      data_cat <- filter(data_05, Categories == input$data_type | Categories == input$second_type)
+    }
+    p <- ggplot(data_cat, aes(x = Categories, y = V1, fill = Categories, text = V1)) + geom_bar(stat = "identity") + labs(x = "Variables", y = "Values", fill = "Variables")
+    p <- ggplotly(p, tooltip = "text")
+    return(p)
+  })
+  output$barchart_18 <- renderPlotly({
+    if(input$data_type == "All" && input$second_type == "All") {
+      data_cat <- data_18
+    } else if(input$data_type == "All") {
+      data_cat <- filter(data_18, Categories == input$second_type)
+    } else if (input$second_type == "All") {
+      data_cat <- filter(data_18, Categories == input$data_type)
+    } else {
+      data_cat <- filter(data_18, Categories == input$data_type | Categories == input$second_type)
+    }
+    a <- ggplot(data_cat, aes(x = Categories, y = V1, fill = Categories, text = V1)) + geom_bar(stat = "identity") + labs(x = "Variables", y = "Values", fill = "Variables")
+    a <- ggplotly(a, tooltip = "text")
+    return(a)
+  })
+  output$linechart <- renderPlotly({
+    df_long <- tidyr::gather(avg_df, key = "Variable", value = "Value", -Year)
+    if(input$data_type == "All" && input$second_type == "All") {
+      data_cat <- df_long
+    } else if(input$data_type == "All") {
+      data_cat <- filter(df_long, Variable == input$second_type)
+    } else if (input$second_type == "All") {
+      data_cat <- filter(df_long, Variable == input$data_type)
+    } else {
+      data_cat <- filter(df_long, Variable == input$data_type | Variable == input$second_type)
+    }
+    b <- ggplot(data_cat, aes(x = Year, y = Value, color = Variable, text = Value)) +
+      geom_line() 
+    b <- ggplotly(b, tooltip = "text")
+    return(b)
+  })
+  
+  output$contrast_map <- renderPlot({
+    year_df <- filter(df, Year == input$year)
+    quartile <- round(nrow(year_df) / 4)
+    high <- year_df[order(year_df$Life.Ladder, decreasing = T), ][1:quartile, ]
+    low <- year_df[order(year_df$Life.Ladder), ][1:quartile, ]
+    
+    h_df <- left_join(high, map_data, by=c('Country.Name' = 'region'))
+    l_df <- left_join(low, map_data, by=c('Country.Name' = 'region'))
+    
+    p <- ggplot() +
+      geom_polygon(data = map_data("world"),
+                   aes(x=long, y=lat, group = group),
+                   color = 'darkgrey', fill = 'lightgrey') +
+      geom_polygon(data = h_df,
+                   aes(x=long, y=lat, group = group,
+                       fill = 'Upper Quartile')) +
+      geom_polygon(data = l_df,
+                   aes(x=long, y=lat, group = group,
+                       fill = 'Lower Quartile')) +
+      ggtitle(paste("Lower and Upper Quartile Life Ladder Score Countries in",
+                    input$year)) +
+      guides(fill=guide_legend(title="Colors")) +
+      scale_fill_manual(values = c('Upper Quartile' = 'royalblue', 'Lower Quartile' = 'firebrick'))
+    
+    return(p)
+  })
+  output$us_chart <- renderTable({
+    us_df <- filter(df, Country.Name == "United States", Year == 2007)
+    return(us_df)
+  })
+  output$in_chart <- renderTable({
+    coyr_df <- filter(df, Year == input$first_choice, Country.Name == input$country_choice)
+    return(coyr_df)
+  })
+  output$year_map <- renderPlot({
+    year_info <- filter(df_map, Year == input$year_choice)
+    map <- ggplot(year_info, aes(x = long, y = lat, group = group)) + 
+      geom_polygon(aes(fill = Life.Ladder), color = "blue") + 
+      ggtitle("World Map Scaled to Life Ladder Score") + 
+      theme(plot.title = element_text(size = 20, face = "bold")) +
+      labs(fill = "Life Ladder Score")
+    scale_fill_continuous()
+    return(map)
+  })
+  output$pac_rad <- renderPlot({
+    filt_df <- filter(df, Year == input$yr_choice, Country.Name == input$pac_choice)
+    select_df <- filt_df[, c("Life.Ladder", "Log.GDP.Per.Capita", "Social.Support", "Healthy.Life.Expectancy.At.Birth",
+                             "Freedom.To.Make.Life.Choices", "avg_temperature", "avg_salinity")]
+    max_min <- data.frame(Life.Ladder = c(10, 2.5), Log.GDP.Per.Capita = c(13, 0), Social.Support = c(1,0), 
+                          Healthy.Life.Expectancy.At.Birth = c(80, 0), Freedom.To.Make.Life.Choices = c(1,0), 
+                          avg_temperature = c(12, 7), avg_salinity = c(34.9, 34.3))
+    rad_df <- rbind(max_min, select_df)
+    rownames(rad_df) <- c("Max","Min","Datapoint")
+    us_chart <- rad_df[c("Max", "Min", "Datapoint"),]
+    radar_graph <- radarchart(us_chart, title = "Radar Chart of Stats for Given Country and Year", pcol = "blue", pfcol = "lightblue", vlcex = 1.25, vlabels = c("Life Ladder", "Log GDP per Capita                     ", 
+                                                                                                                                                                 "Social Support                  ", "Life Expectancy ",
+                                                                                                                                                                 "                           Freedom to Make Life Choices", "                          Average Temperature", "            Average Salinity"))
+    return(radar_graph)
+  })
+}
+
+shinyApp(ui = ui, server = server)
