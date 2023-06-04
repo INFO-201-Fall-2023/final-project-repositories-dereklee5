@@ -8,7 +8,6 @@ library(fmsb)
 
 source("data_cleaning.R")
 df <- read.csv("Final_Clean_DF.csv")
-map_data <- map_data('world')
 #Replacing Any Mismatched Country Names in the Mapping Data
 map_data <- map_data("world")
 map_data$region <- str_replace_all(map_data$region, "USA","United States")
@@ -85,20 +84,6 @@ viz_pg_1 <- tabPanel("Change Over Time",
                          )
                        )
                      )
-)
-
-controls_year <- sidebarPanel(
-  h1("Control Panel"),
-  selectInput(
-    inputId = "year",
-    label = "Select a Year",
-    choice = unique(df$Year)
-  )
-)
-
-plot_view <- tabPanel("Plot", plotOutput(outputId = "contrast_map"))
-main_viz_3 <- mainPanel(
-  tabsetPanel(plot_view)
 )
 
 viz_pg_2 <- tabPanel("Zooming Out", 
@@ -196,6 +181,34 @@ viz_pg_2 <- tabPanel("Zooming Out",
                      )
 )
 
+controls_year <- sidebarPanel(
+  h1("Control Panel"),
+  selectInput(
+    inputId = "year",
+    label = "Select a Year",
+    choice = unique(df$Year)
+  ),
+  p("This data visualization will analyze the extremes of the Life Ladder scores and how countries
+    in those extremes are positioned geographically.")
+)
+
+plot_view <- tabPanel("Map", plotOutput(outputId = "contrast_map"),
+                      p("Taking a look at the geographic positions of the upper and lower ends of the Life Ladder scale,
+                       the countries with the highest scores don't seem to change much while the lowest score countries rapidly
+                        change throughout the years."))
+line_view <- tabPanel("Line", plotOutput(outputId = "contrast_line"),
+                      p("While the highest scores don't seem to have any discernible trend,
+                        the lowest scores end up shifting ever so slightly lower."))
+uq_table <- tabPanel("Upper Quartile Table", tableOutput(outputId = "uq_df"))
+lq_table <- tabPanel("Lower Quartile Table", tableOutput(outputId = "lq_df"))
+
+main_viz_3 <- mainPanel(
+  tabsetPanel(line_view,
+              plot_view,
+              uq_table,
+              lq_table)
+)
+
 viz_pg_3 <- tabPanel("Contrasts",
                      fluidPage(
                        titlePanel("Contrasts Data Story"),
@@ -257,6 +270,42 @@ server <- function(input, output){
     return(b)
   })
   
+  output$uq_df <- renderTable({
+    year_df <- filter(df, Year == input$year)
+    quartile <- round(nrow(year_df) / 4)
+    high <- year_df[order(year_df$Life.Ladder, decreasing = T), ][1:quartile, ]
+    return(high)
+  })
+  output$lq_df <- renderTable({
+    year_df <- filter(df, Year == input$year)
+    quartile <- round(nrow(year_df) / 4)
+    low <- year_df[order(year_df$Life.Ladder), ][1:quartile, ]
+    return(low)
+  })
+  output$contrast_line <- renderPlot({
+    group_df <- group_by(df, Year)
+    line_df <- summarise(group_df, high = max(Life.Ladder), low = min(Life.Ladder),
+                         country = Country.Name)
+    
+    p <- ggplot() +
+      geom_line(data = line_df,
+                aes(x=Year, y=high, color='Highest Score'),
+                linewidth=2) +
+      geom_line(data = line_df,
+                aes(x=Year, y=low, color='Lowest Score'),
+                linewidth=2) +
+      geom_point(data = line_df,
+                 aes(x=Year, y=high, color='Highest Score'),
+                 size=4) +
+      geom_point(data = line_df,
+                 aes(x=Year, y=low, color='Lowest Score'),
+                 size=4) +
+      ggtitle(paste("Max and Min Life Ladder Scores Over Time")) +
+      guides(color=guide_legend(title="Colors")) +
+      scale_color_manual(values = c('Highest Score' = 'royalblue', 'Lowest Score' = 'firebrick'))
+
+    return(p)
+  })
   output$contrast_map <- renderPlot({
     year_df <- filter(df, Year == input$year)
     quartile <- round(nrow(year_df) / 4)
@@ -283,6 +332,7 @@ server <- function(input, output){
     
     return(p)
   })
+  
   output$us_chart <- renderTable({
     us_df <- filter(df, Country.Name == "United States", Year == 2007)
     return(us_df)
