@@ -5,6 +5,7 @@ library(ggplot2)
 library(shiny)
 library(plotly)
 library(fmsb)
+library(GGally)
 
 source("data_cleaning.R")
 df <- read.csv("Final_Clean_DF.csv")
@@ -57,10 +58,11 @@ summary_pg <- tabPanel("Summary",
                        p("Throughout this project, telling a story has taken on many shapes and forms. From analyzing how mental wellbeing and ocean conditions have changed over time, 
                        narrowing in on different countries before zooming out to look at the broader picture of life status relative to ocean statistics, and analyzing the contrast of the best and worst scorers 
                        from the dataset, we hope that the viewer can begin to understand the important trends that become apparent. Namely, we can begin to see that changes in the ocean reflective of climate change 
-                       can be measured in conjunction with perceived happiness and wellbeing to give a direct relationship. It is critical that we think not only about how pollution and global warming impacts our physical wellbeing
+                       can be measured in conjunction with perceived happiness and wellbeing to give a direct relationship. The collected data is unfortunately limited in scope, which may affect how clear correlations are. However, it is critical that we think not only about how pollution and global warming impacts our physical wellbeing
                        but that we also consider the way it impacts us mentally. Evidence points to many different factors of climate change affecting our mental health. For example, natural disasters create displacement from homes
                        and act as a highly stressful and traumatic event, but something as small as a change in ocean temperature has a physical effect on the biosphere that in turn has an effect on how we think and feel. Global warming may not be the only 
                        factor affecting a decline in mental wellbeing over the last decade, but it is imperative that it be taken into consideration as a detriment to our environment and our physical and mental wellbeing."),
+                       plotOutput(outputId = "sum_chart"),
                        h3("Data Sources"),
                        p("GLODAP: https://www.ncei.noaa.gov/data/oceans/ncei/ocads/data/0210813/GLODAPv2.2020_Pacific_Ocean.csv"),
                        p("World Happiness Indicators Dataset: https://www.kaggle.com/datasets/unsdsn/world-happiness"),
@@ -431,6 +433,12 @@ server <- function(input, output){
                                                                                                                                                                  "Social Support                  ", "Life Expectancy ",
                                                                                                                                                                  "                           Freedom to Make Life Choices", "                          Average Temperature", "            Average Salinity"))
     return(radar_graph)
+  })
+   output$sum_chart <- renderPlot({
+    pac_filt_df <- filter(df, Country.Name == pacific_countries)
+    pac_df <- pac_filt_df[, c("Life.Ladder", "Log.GDP.Per.Capita", "Social.Support", "Healthy.Life.Expectancy.At.Birth",
+                             "Freedom.To.Make.Life.Choices", "avg_temperature", "avg_salinity")]
+    ggpairs(pac_df, title = "Correlogram of Ocean and Wellbeing Variables")
   })
 }
 
