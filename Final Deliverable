@@ -53,10 +53,21 @@ intro_pg <- tabPanel("Introduction",
 summary_pg <- tabPanel("Summary",
                        h1("Summary Takeaways and About Us"),
                        br(),
-                       p("Through our data analysis, it is evident that climate change impacting ocean conditions has an detrimental impact on people’s mental wellbeing across the world. It is imperative that experts continue to conduct research on this matter in order to improve the health of the earth as well as the mental health of individuals all across the globe. "),
+                       h4("Through our data analysis, it is evident that climate change impacting ocean conditions has an detrimental impact on people’s mental wellbeing across the world. It is imperative that experts continue to conduct research on this matter in order to improve the health of the earth as well as the mental health of individuals all across the globe. "),
+                       p("Throughout this project, telling a story has taken on many shapes and forms. From analyzing how mental wellbeing and ocean conditions have changed over time, 
+                       narrowing in on different countries before zooming out to look at the broader picture of life status relative to ocean statistics, and analyzing the contrast of the best and worst scorers 
+                       from the dataset, we hope that the viewer can begin to understand the important trends that become apparent. Namely, we can begin to see that changes in the ocean reflective of climate change 
+                       can be measured in conjunction with perceived happiness and wellbeing to give a direct relationship. It is critical that we think not only about how pollution and global warming impacts our physical wellbeing
+                       but that we also consider the way it impacts us mentally. Evidence points to many different factors of climate change affecting our mental health. For example, natural disasters create displacement from homes
+                       and act as a highly stressful and traumatic event, but something as small as a change in ocean temperature has a physical effect on the biosphere that in turn has an effect on how we think and feel. Global warming may not be the only 
+                       factor affecting a decline in mental wellbeing over the last decade, but it is imperative that it be taken into consideration as a detriment to our environment and our physical and mental wellbeing."),
                        h3("Data Sources"),
                        p("GLODAP: https://www.ncei.noaa.gov/data/oceans/ncei/ocads/data/0210813/GLODAPv2.2020_Pacific_Ocean.csv"),
                        p("World Happiness Indicators Dataset: https://www.kaggle.com/datasets/unsdsn/world-happiness"),
+                       h3("Reference Sources"), 
+                       p("https://www.datanovia.com/en/blog/beautiful-radar-chart-in-r-using-fmsb-and-ggplot-packages/"),
+                       p("https://r-graph-gallery.com/index.html"),
+                       p("https://www.datanovia.com/en/blog/how-to-create-a-map-using-ggplot2/")
                        h3("Project Contributors"),
                        p("Ashley Smith
                           Derek Lee
