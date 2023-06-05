@@ -87,10 +87,8 @@ viz_pg_1 <- tabPanel("Change Over Time",
 )
 
 viz_pg_2 <- tabPanel("Zooming Out", 
-                     fluidPage(
-                       titlePanel("Zooming Out: Perspective on the Life Ladder"),
-                       
-                       #Zoomed In: United States View 
+                     navbarPage(title = "Zooming Out: Perspective on the Life Ladder",
+                       tabPanel(title = "Zoomed In: United States View",
                        sidebarLayout(
                          sidebarPanel(
                            p("Let's start by looking at the United States, the country in which we live in.
@@ -105,8 +103,9 @@ viz_pg_2 <- tabPanel("Zooming Out",
                            tableOutput(
                              outputId = "us_chart")
                          )
-                       ),
-                       #Zoomed In: Select your country
+                       )
+                    ),
+                       tabPanel(title = "Zoomed In: Select a Country",
                        sidebarLayout(
                          sidebarPanel(
                            p("Feel free to explore the statistics for other countries in a given year."),
@@ -128,8 +127,9 @@ viz_pg_2 <- tabPanel("Zooming Out",
                            p("As you can see, there is substantial variation between individual countries. Now that we've looked 
         at the data on a zoomed in scale, let's move on and begin zooming out.")
                          )
-                       ),
-                       #Moving Out: Pacific Countries
+                       )
+                     ),
+                       tabPanel(title = "Zooming Out: Pacific Countries",
                        sidebarLayout(
                          sidebarPanel(
                            p("To begin zooming out, we will look at only Pacific countries, which is where our ocean data comes from. This includes 
@@ -154,8 +154,9 @@ viz_pg_2 <- tabPanel("Zooming Out",
                            plotOutput(
                              outputId = "pac_rad")
                          )
-                       ),
-                       #Zoomed Out: World View
+                       )
+                    ),
+                       tabPanel(title = "Zoomed Out: World View",
                        sidebarLayout(
                          sidebarPanel(
                            selectInput(
@@ -179,6 +180,7 @@ viz_pg_2 <- tabPanel("Zooming Out",
                          )
                        )
                      )
+                  )
 )
 
 controls_year <- sidebarPanel(
