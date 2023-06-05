@@ -39,7 +39,6 @@ intro_pg <- tabPanel("Introduction",
                        water conditions and increasing mental health disorders across the United States over time. Our unique analysis takes an intriguing approach to treating mental 
                        health difficulties by assessing their environmental roots and how they influence individuals in their daily lives, encouraging more people to take action and address 
                        the destructive nature of these two diseases."),
-                    imageOutput("image_1"),
                      br(),
                      p("For this project, we will be using data from the Global Ocean Data Analysis Project (GLODAP) as well as the World Happiness Indicators Dataset. The GLODAP data was collected 
                      from numerous NOAA sources and contains statistics specifically on the Pacific Ocean from 1993 to 2018. Information includes precisely where and at what time the data was collected (latitude, longitude, month/day/hour/minute, pressure, depth) 
@@ -277,13 +276,6 @@ ui <- navbarPage("Final Deliverable",
 )
 
 server <- function(input, output){
-  output$image_1 <- renderImage({
-    list(src = "mentalwellbeing.png",
-         contentType = 'image/png',
-         width = 330,
-         height = 330,
-         alt = "")
-  }, deleteFile = FALSE)
   
   output$image_2 <- renderImage({
     list(src = "glodapinfo.jpg",
