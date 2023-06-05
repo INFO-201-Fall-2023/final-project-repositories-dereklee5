@@ -78,7 +78,7 @@ controls <- sidebarPanel(
 view_05 <- tabPanel("2005", h3("Data During 2005"), p("Hover over each bar to see the exact value!"), plotlyOutput(outputId = "barchart_5"))
 view_18 <- tabPanel("2018", h3("Data During 2018"), p("Hover over each bar to see the exact value!"), plotlyOutput(outputId = "barchart_18"))
 both_view <- tabPanel("2005-2018", h3("Change Between 2005 and 2018"), p("Hover over each data point to see the exact value!"), plotlyOutput(outputId = "linechart"), 
-p("As seen in this line graph, ocean conditions are declining as time goes on. Ocean temperatures are warming up, CO2 levels are rising, and oxygen levels are declining.")),
+                      p("As seen in this line graph, ocean conditions are declining as time goes on. Ocean temperatures are warming up, CO2 levels are rising, and oxygen levels are declining."),
 p("Simultaneously, mental wellbeing across the world is also declining. People are reporting less feelings of freedom and social support, and their life ladder scores (happiness levels) are dropping as well."))
 viz_pg_1 <- tabPanel("Change Over Time",
                      fluidPage(
@@ -97,103 +97,103 @@ viz_pg_1 <- tabPanel("Change Over Time",
 )
 
 us_zoom_view <- tabPanel(title = "Zoomed In: United States View",
-         sidebarLayout(
-           sidebarPanel(
-             p("Let's start by looking at the United States, the country in which we live in.
+                         sidebarLayout(
+                           sidebarPanel(
+                             p("Let's start by looking at the United States, the country in which we live in.
              To begin our zoomed in analysis, in the year 2007, the United States had the 
              highest life ladder of any Pacific country in the dataset, with a score of 7.513. At this time, life expectancy at birth was 66.76 years."),
-               p("Also in the year 2007, the average ocean temperature in the Pacific was at 7.43º Celsius, or 45.4º 
+                             p("Also in the year 2007, the average ocean temperature in the Pacific was at 7.43º Celsius, or 45.4º 
         Fahrenheit.")
-           ),
-           mainPanel(
-             h2("Zoomed In: The United States"),
-             tableOutput(
-               outputId = "us_chart")
-           )
-         )
-      )
+                           ),
+                           mainPanel(
+                             h2("Zoomed In: The United States"),
+                             tableOutput(
+                               outputId = "us_chart")
+                           )
+                         )
+)
 select_zoom_view <- tabPanel(title = "Zoomed In: Select a Country",
-         sidebarLayout(
-           sidebarPanel(
-             p("Feel free to explore the statistics for other countries in a given year."),
-             selectInput(
-               inputId = "first_choice",
-               label = "Pick a year:",
-               choices = unique(df$Year)
-             ),
-             selectInput(
-               inputId = "country_choice",
-               label = "Pick a country:",
-               choices = unique(df$Country.Name)
-             )
-           ),
-           mainPanel(
-             h2("Zoomed In: Any Country or Year"),
-             tableOutput(
-               outputId = "in_chart"),
-             p("As you can see, there is substantial variation between individual countries. Now that we've looked 
+                             sidebarLayout(
+                               sidebarPanel(
+                                 p("Feel free to explore the statistics for other countries in a given year."),
+                                 selectInput(
+                                   inputId = "first_choice",
+                                   label = "Pick a year:",
+                                   choices = unique(df$Year)
+                                 ),
+                                 selectInput(
+                                   inputId = "country_choice",
+                                   label = "Pick a country:",
+                                   choices = unique(df$Country.Name)
+                                 )
+                               ),
+                               mainPanel(
+                                 h2("Zoomed In: Any Country or Year"),
+                                 tableOutput(
+                                   outputId = "in_chart"),
+                                 p("As you can see, there is substantial variation between individual countries. Now that we've looked 
         at the data on a zoomed in scale, let's move on and begin zooming out.")
-           )
-         )
-      )
+                               )
+                             )
+)
 pac_zoom_view <- tabPanel(title = "Zooming Out: Pacific Countries",
-         sidebarLayout(
-           sidebarPanel(
-             p("To begin zooming out, we will look at only Pacific countries, which is where our ocean data comes from. This includes 
+                          sidebarLayout(
+                            sidebarPanel(
+                              p("To begin zooming out, we will look at only Pacific countries, which is where our ocean data comes from. This includes 
       Chile, Ecuador, Peru, Papua New Guinea, Japan, Australia, and the United States. We will look at different years, but to 
       compare once again in 2007, Ecuador had the lowest Life Laddder score at 4.99 compared to the high scores of 
       the United States at 7.51 and Australia at 7.29."),
-             radioButtons(
-               inputId = "pac_choice",
-               label = "Select one of the Pacific countries you want to see all the stats for:",
-               choices = pacific_countries
-             ),
-             selectInput(
-               inputId = "yr_choice",
-               label = "Select the year that you would like to look at:",
-               choices = unique(df$Year)
-             )
-           ),
-           mainPanel(
-             h2("Zooming Out: Visualizing Pacific Countries with a Radar Graph"),
-             h4("Note: There are several datapoints missing from the data; for example, the only Pacific countries for which there is data
+                              radioButtons(
+                                inputId = "pac_choice",
+                                label = "Select one of the Pacific countries you want to see all the stats for:",
+                                choices = pacific_countries
+                              ),
+                              selectInput(
+                                inputId = "yr_choice",
+                                label = "Select the year that you would like to look at:",
+                                choices = unique(df$Year)
+                              )
+                            ),
+                            mainPanel(
+                              h2("Zooming Out: Visualizing Pacific Countries with a Radar Graph"),
+                              h4("Note: There are several datapoints missing from the data; for example, the only Pacific countries for which there is data
         in the year 2005 are Japan and Australia. See more recent years for more accurate results."),
-             plotOutput(
-               outputId = "pac_rad")
-           )
-         )
-      )
+                              plotOutput(
+                                outputId = "pac_rad")
+                            )
+                          )
+)
 world_zoom_view <- tabPanel(title = "Zoomed Out: World View",
-         sidebarLayout(
-           sidebarPanel(
-             selectInput(
-               inputId = "year_choice",
-               label = "Select one of the following years to adjust the life ladder map:",
-               choices = unique(df$Year)
-             ),
-             p("Here, we can take a zoomed out approach. Life Ladder is one of the better indicators
+                            sidebarLayout(
+                              sidebarPanel(
+                                selectInput(
+                                  inputId = "year_choice",
+                                  label = "Select one of the following years to adjust the life ladder map:",
+                                  choices = unique(df$Year)
+                                ),
+                                p("Here, we can take a zoomed out approach. Life Ladder is one of the better indicators
        of what mental wellbeing looks like in that country. Compare our original example of the 
        high scores of United States in 2007 to other countries or years.")
-           ),
-           mainPanel(
-             h2("Zoomed Out: Life Ladder on a Global Scale"),
-             plotOutput(
-               outputId = "year_map"),
-             p("Life Ladder score describes how good a person perceives their life as being, on 
+                              ),
+                              mainPanel(
+                                h2("Zoomed Out: Life Ladder on a Global Scale"),
+                                plotOutput(
+                                  outputId = "year_map"),
+                                p("Life Ladder score describes how good a person perceives their life as being, on 
       a scale from 0 to 10. A score of 10 represents the best possible life and a score of 0 represents the worst possible life 
       that person could imagine for themselves. The world map displays the data contained only for that
       year. Some  countries do not contain information on the Life Ladder scale for a particular 
         year or at all. Again, see more recent years for a more full map.")
-           )
-         )
-      )
+                              )
+                            )
+)
 viz_pg_2 <- tabPanel("Zooming Out", 
                      fluidPage(
                        titlePanel("Zooming Out: Perspective on the Life Ladder", ),
                        sidebarLayout(
                          sidebarPanel(
-                         h1("Analysis of the Life Ladder Relative to Ocean Statistics"),
-                         p("Analysis of biogeochemical ocean data is paired with World Happiness Index data 
+                           h1("Analysis of the Life Ladder Relative to Ocean Statistics"),
+                           p("Analysis of biogeochemical ocean data is paired with World Happiness Index data 
                          in order to analyze for a correlation between environmental factors and mental and physical 
                          wellbeing. We observe in this data from 2005 to 2018 to look at how ocean factors such as salinity,
                          CO2, and temperature levels change with respect to indicators of wellbeing such as life expectancy
@@ -212,7 +212,7 @@ viz_pg_2 <- tabPanel("Zooming Out",
                        )
                      )
 )
-                      
+
 
 controls_year <- sidebarPanel(
   h1("Control Panel"),
@@ -336,7 +336,7 @@ server <- function(input, output){
       ggtitle(paste("Max and Min Life Ladder Scores Over Time")) +
       guides(color=guide_legend(title="Colors")) +
       scale_color_manual(values = c('Highest Score' = 'royalblue', 'Lowest Score' = 'firebrick'))
-
+    
     return(p)
   })
   output$contrast_map <- renderPlot({
