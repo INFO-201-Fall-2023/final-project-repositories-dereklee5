@@ -39,14 +39,22 @@ intro_pg <- tabPanel("Introduction",
                        health difficulties by assessing their environmental roots and how they influence individuals in their daily lives, encouraging more people to take action and address 
                        the destructive nature of these two diseases."),
                      br(),
-                     p("Datasets + Analysis"),
+                     p("For this project, we will be using data from the Global Ocean Data Analysis Project (GLODAP) as well as the World Happiness Indicators Dataset. The GLODAP data was collected 
+                     from numerous NOAA sources and contains statistics specifically on the Pacific Ocean from 1993 to 2018. Information includes precisely where and at what time the data was collected (latitude, longitude, month/day/hour/minute, pressure, depth) 
+                    as well as the temperature, salinity, pH, and chemical levels. The World Happiness Indicators Dataset aggregates a survey on global happiness, also known as the World Happiness Report, which ranks 155 countries by their happiness levels in order to
+                   inform policy making decisions globally. The dataset contains information recorded on Gallup from 2005 to 2018 by countries, which are tagged with a regional indicator. The main measurement for happiness is the Cantril ladder (also known as the life ladder), 
+                  by which respondents record their score thinking of a 0 as the worst possible life for them and a 10 as the best possible life. Some indicators (among others) include GDP per capita and life expectancy at birth."),
                      br(),
-                     p("Conclusion")
+                     p("Our project will use this data to conduct several types of analysis, including comparing conditions over time, zooming out from a United States perspective to a worldwide perspective, and contrasting happiness levels in countries across the globe. Through this analysis,
+                    we will be able to prove a correlation between changing ocean conditions and mental wellbeing.")
 )
 summary_pg <- tabPanel("Summary",
                        h1("Summary Takeaways and About Us"),
                        br(),
-                       p("Through our data analysis, it is evident that climate change impacting ocean conditions has an detrimental impact on people’s mental wellbeing across the world. It is imperative that experts continue to conduct research on this matter in order to improve the health of the earth as well as the mental health of individuals all across the globe. ")
+                       p("Through our data analysis, it is evident that climate change impacting ocean conditions has an detrimental impact on people’s mental wellbeing across the world. It is imperative that experts continue to conduct research on this matter in order to improve the health of the earth as well as the mental health of individuals all across the globe. "),
+                       h3("Data Sources"),
+                       p("GLODAP: https://www.ncei.noaa.gov/data/oceans/ncei/ocads/data/0210813/GLODAPv2.2020_Pacific_Ocean.csv"),
+                       p("World Happiness Indicators Dataset: https://www.kaggle.com/datasets/unsdsn/world-happiness")
 )
 
 
