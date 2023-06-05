@@ -77,7 +77,9 @@ controls <- sidebarPanel(
 )
 view_05 <- tabPanel("2005", h3("Data During 2005"), p("Hover over each bar to see the exact value!"), plotlyOutput(outputId = "barchart_5"))
 view_18 <- tabPanel("2018", h3("Data During 2018"), p("Hover over each bar to see the exact value!"), plotlyOutput(outputId = "barchart_18"))
-both_view <- tabPanel("2005-2018", h3("Change Between 2005 and 2018"), p("Hover over each data point to see the exact value!"), plotlyOutput(outputId = "linechart"))
+both_view <- tabPanel("2005-2018", h3("Change Between 2005 and 2018"), p("Hover over each data point to see the exact value!"), plotlyOutput(outputId = "linechart"), 
+p("As seen in this line graph, ocean conditions are declining as time goes on. Ocean temperatures are warming up, CO2 levels are rising, and oxygen levels are declining.")),
+p("Simultaneously, mental wellbeing across the world is also declining. People are reporting less feelings of freedom and social support, and their life ladder scores (happiness levels) are dropping as well."))
 viz_pg_1 <- tabPanel("Change Over Time",
                      fluidPage(
                        titlePanel("Comparing Ocean Conditions and Mental Wellbeing Over Time"),
