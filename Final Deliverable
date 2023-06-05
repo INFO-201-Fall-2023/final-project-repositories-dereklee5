@@ -45,6 +45,7 @@ intro_pg <- tabPanel("Introduction",
                     as well as the temperature, salinity, pH, and chemical levels. The World Happiness Indicators Dataset aggregates a survey on global happiness, also known as the World Happiness Report, which ranks 155 countries by their happiness levels in order to
                    inform policy making decisions globally. The dataset contains information recorded on Gallup from 2005 to 2018 by countries, which are tagged with a regional indicator. The main measurement for happiness is the Cantril ladder (also known as the life ladder), 
                   by which respondents record their score thinking of a 0 as the worst possible life for them and a 10 as the best possible life. Some indicators (among others) include GDP per capita and life expectancy at birth."),
+                     imageOutput("image_2"),
                      br(),
                      p("Our project will use this data to conduct several types of analysis, including comparing conditions over time, zooming out from a United States perspective to a worldwide perspective, and contrasting happiness levels in countries across the globe. Through this analysis,
                     we will be able to prove a correlation between changing ocean conditions and mental wellbeing.")
@@ -270,7 +271,15 @@ server <- function(input, output){
          height = 330,
          alt = "This is alternate text")
   }, deleteFile = FALSE)
-
+  
+  output$image_2 <- renderImage({
+    list(src = "glodapinfo.jpg",
+         contentType = 'image/png',
+         widght = 330,
+         height = 330,
+         alt = "Map of GLODAP ocean data collected and updated as of 2022")
+  }, deleteFile = FALSE)
+  
   output$barchart_5 <- renderPlotly({
     if(input$data_type == "All" && input$second_type == "All") {
       data_cat <- data_05
