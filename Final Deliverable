@@ -54,7 +54,11 @@ summary_pg <- tabPanel("Summary",
                        p("Through our data analysis, it is evident that climate change impacting ocean conditions has an detrimental impact on people’s mental wellbeing across the world. It is imperative that experts continue to conduct research on this matter in order to improve the health of the earth as well as the mental health of individuals all across the globe. "),
                        h3("Data Sources"),
                        p("GLODAP: https://www.ncei.noaa.gov/data/oceans/ncei/ocads/data/0210813/GLODAPv2.2020_Pacific_Ocean.csv"),
-                       p("World Happiness Indicators Dataset: https://www.kaggle.com/datasets/unsdsn/world-happiness")
+                       p("World Happiness Indicators Dataset: https://www.kaggle.com/datasets/unsdsn/world-happiness"),
+                       h3("Project Contributors"),
+                       p("Ashley Smith
+                          Derek Lee
+                          Ryan Nishi")
 )
 
 
