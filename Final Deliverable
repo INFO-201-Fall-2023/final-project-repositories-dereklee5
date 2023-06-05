@@ -38,6 +38,7 @@ intro_pg <- tabPanel("Introduction",
                        water conditions and increasing mental health disorders across the United States over time. Our unique analysis takes an intriguing approach to treating mental 
                        health difficulties by assessing their environmental roots and how they influence individuals in their daily lives, encouraging more people to take action and address 
                        the destructive nature of these two diseases."),
+                    imageOutput("image_1"),
                      br(),
                      p("For this project, we will be using data from the Global Ocean Data Analysis Project (GLODAP) as well as the World Happiness Indicators Dataset. The GLODAP data was collected 
                      from numerous NOAA sources and contains statistics specifically on the Pacific Ocean from 1993 to 2018. Information includes precisely where and at what time the data was collected (latitude, longitude, month/day/hour/minute, pressure, depth) 
@@ -83,7 +84,7 @@ view_05 <- tabPanel("2005", h3("Data During 2005"), p("Hover over each bar to se
 view_18 <- tabPanel("2018", h3("Data During 2018"), p("Hover over each bar to see the exact value!"), plotlyOutput(outputId = "barchart_18"))
 both_view <- tabPanel("2005-2018", h3("Change Between 2005 and 2018"), p("Hover over each data point to see the exact value!"), plotlyOutput(outputId = "linechart"), 
                       p("As seen in this line graph, ocean conditions are declining as time goes on. Ocean temperatures are warming up, CO2 levels are rising, and oxygen levels are declining."),
-p("Simultaneously, mental wellbeing across the world is also declining. People are reporting less feelings of freedom and social support, and their life ladder scores (happiness levels) are dropping as well."))
+                      p("Simultaneously, mental wellbeing across the world is also declining. People are reporting less feelings of freedom and social support, and their life ladder scores (happiness levels) are dropping as well."))
 viz_pg_1 <- tabPanel("Change Over Time",
                      fluidPage(
                        titlePanel("Comparing Ocean Conditions and Mental Wellbeing Over Time"),
@@ -262,6 +263,14 @@ ui <- navbarPage("Final Deliverable",
 )
 
 server <- function(input, output){
+  output$image_1 <- renderImage({
+    list(src = "mentalwellbeing.png",
+         contentType = 'image/png',
+         width = 330,
+         height = 330,
+         alt = "This is alternate text")
+  }, deleteFile = FALSE)
+
   output$barchart_5 <- renderPlotly({
     if(input$data_type == "All" && input$second_type == "All") {
       data_cat <- data_05
