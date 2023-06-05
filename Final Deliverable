@@ -67,7 +67,7 @@ summary_pg <- tabPanel("Summary",
                        h3("Reference Sources"), 
                        p("https://www.datanovia.com/en/blog/beautiful-radar-chart-in-r-using-fmsb-and-ggplot-packages/"),
                        p("https://r-graph-gallery.com/index.html"),
-                       p("https://www.datanovia.com/en/blog/how-to-create-a-map-using-ggplot2/")
+                       p("https://www.datanovia.com/en/blog/how-to-create-a-map-using-ggplot2/"),
                        h3("Project Contributors"),
                        p("Ashley Smith
                           Derek Lee
