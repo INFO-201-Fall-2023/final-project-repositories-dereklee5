@@ -280,7 +280,7 @@ server <- function(input, output){
          contentType = 'image/png',
          width = 330,
          height = 330,
-         alt = "This is alternate text")
+         alt = "")
   }, deleteFile = FALSE)
   
   output$image_2 <- renderImage({
